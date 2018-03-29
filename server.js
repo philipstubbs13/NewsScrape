@@ -3,6 +3,7 @@ var express = require("express");
 var mongojs = require("mongojs");
 var request = require("request");
 var cheerio = require("cheerio");
+var bodyParser = require("body-parser");
 
 //Initialize Express
 var app = express();
@@ -24,10 +25,22 @@ db.on("error", function(error) {
     console.log("Database Error", error);
 });
 
+//Parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+//Parse application/json
+app.use(bodyParser.json());
+
+//Set Handlebars.
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars")
+
 //Routes
 //1. At the root path, send a simple hello world message to the browser.
 app.get("/", function(req, res) {
-    res.send("Hello world");
+    res.render("home");
 });
 
 //This route will retrieve all of the data.
@@ -56,11 +69,12 @@ app.get("/scrape", function(req, res) {
     request("http://www.nba.com/timberwolves/news/", function(error, response, html) {
         var $ = cheerio.load(html);
 
-        $(".post__information").each(function(i, element){
+        $(".post").each(function(i, element){
             var title = $(this).find("a").text();
             var link = $(this).find("a").attr("href");
             var date = $(this).find(".post__date").text();
             var summary = $(this).find(".post__body").text();
+            var tags = $(this).find(".tag__link").text();
             console.log(title);
             console.log(link);
             if (title && link) {
@@ -68,7 +82,8 @@ app.get("/scrape", function(req, res) {
                     title: title,
                     link: link,
                     date: date,
-                    summary: summary
+                    summary: summary,
+                    tags: tags
                 },
                 function(error, saved) {
                     if (error){
