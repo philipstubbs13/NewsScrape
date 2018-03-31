@@ -5,3 +5,7 @@
 .card-title {
     color: white !important;
 }
+
+.article-img{
+    max-width: 320px;
+}

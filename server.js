@@ -66,24 +66,28 @@ app.get("/all", function(req, res) {
 //push it intto a MongoDB collection instead?
 app.get("/scrape", function(req, res) {
 
-    request("http://www.nba.com/timberwolves/news/", function(error, response, html) {
+    request("http://www.espn.com/mens-college-basketball/", function(error, response, html) {
         var $ = cheerio.load(html);
 
-        $(".post").each(function(i, element){
-            var title = $(this).find("a").text();
+          // An empty array to save the data that we'll scrape
+        var results = [];
+
+
+        $(".contentItem__content").each(function(i, element){
+            var title = $(this).find(".contentItem__title").text();
             var link = $(this).find("a").attr("href");
-            var date = $(this).find(".post__date").text();
-            var summary = $(this).find(".post__body").text();
-            var tags = $(this).find(".tag__link").text();
+            // var date = $(this).find(".post__date").text();
+            var summary = $(this).find(".contentItem__subhead").text();
+            // var imgLink = $(element).find("a").find("img").attr("data-srcset").split(",")[0].split(" ")[0];
+            var img = $(this).find(".media-wrapper").find(".media-wrapper_image").find("img").attr("data-default-src");
             console.log(title);
             console.log(link);
             if (title && link) {
                 db.scrapedData.save ({
                     title: title,
                     link: link,
-                    date: date,
                     summary: summary,
-                    tags: tags
+                    img: img
                 },
                 function(error, saved) {
                     if (error){
@@ -94,6 +98,12 @@ app.get("/scrape", function(req, res) {
                         console.log(saved);
                     }
                 });
+                // Save these results in an object that we'll push into the results array we defined earlier
+                // results.push({
+                //     title: title,
+                //     link: link,
+                //     summary: summary
+                //  });
             }
         });
     });
