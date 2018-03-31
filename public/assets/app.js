@@ -3,7 +3,7 @@ $.getJSON("/all", function(data) {
 
     //For each entry of that json...
     console.log(data);
-    for (var i =0; i < data.length; i++) {
+    for (var i =2; i < data.length; i++) {
         //Dynamically create a separate card for each article that we are scraping/extracting from the news site.
         var articleCard = $("<div>");
         articleCard.addClass("card border border-success bg-success mt-5");
@@ -30,7 +30,7 @@ $.getJSON("/all", function(data) {
         //Dynamically create <a> tag to link to each article from my application.
         articleLink = $("<a>");
         articleLink.addClass("article-link");
-        articleLink.attr("href", "http://www.espn.com/mens-college-basketball/" + data[i].link).attr("target", "_blank");
+        articleLink.attr("href", "http://www.espn.com" + data[i].link).attr("target", "_blank");
         //Dynamically create <button> tag to create a a "Continue reading" button that will link to each article.
         articleLinkButton = $("<button>");
         articleLinkButton.addClass("btn btn-primary btn-dark mt-4").text("Continue reading");
