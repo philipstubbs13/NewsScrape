@@ -75,6 +75,8 @@ $(window).load(function() {
     $(".save-article-btn").on("click", function(event) {
         //Grab the id associated with the article.
         var thisId = $(this).attr("data-id");
+        //Show message to the user that the article was saved successfully
+        $('#save-success-modal').modal('show');
 
         //Run a PUT request to update saved value from false to true in the database.
         $.ajax({
@@ -85,8 +87,11 @@ $(window).load(function() {
         .then(function(data) {
         //Log the response
         console.log(data);
-        //Reload the page to see the updated list of atricles.
-        location.reload();
+        
+        //When user closes modal, reload the page.
+        $("#article-saved-close-button").on("click", function(event) {
+            //Reload the page to see the updated list of atricles.
+            location.reload();
         });
     });
 
@@ -131,4 +136,6 @@ $(window).load(function() {
             );
             });
         });
+});
+
 });
