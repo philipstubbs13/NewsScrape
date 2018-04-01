@@ -1,38 +1,15 @@
-<!--Jumbotron-->
-<div class="jumbotron text-center bg-success text-white">
-    <h1 class="display-4" id="app-title">College basketball news scraper</h1>
-    <p class="lead">Because ball is life.</p>
-</div>
+<!--Site header/Jumbotron-->
+{{> articles/header-block}} 
 
+<!--Scraped articles go here-->
 <div class="container">
         <div class="row">
             <div class="col-md-12 articles">
-                {{!-- <div class="card border-success bg-success mt-5">
-                    <img class="card-img-top" src="..." alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title article-title">Article title goes here.</h5>
-                        <p class="card-text article-date">Article date goes here.</p>
-                        <p class="card-text article-summary">Article summary goes here.</p>
-                        <p class="card-text article-link">Article link goes here.</p>
-                    </div>
-                </div> --}}
+            <!--scraped articles go here-->
+            {{> articles/article-block saved=false}}
             </div>
     </div>
 </div>
 
 <!--Footer-->
-<div class="row mt-5">
-    <div class="col-md-12">
-      <div class="card footer bg-success">
-        <div class="container">
-            <div class="card-body footer-body text-white">
-                <h5 class="card-title text-white">College basketball news scraper</h5>
-                <p class="text-white">Because ball is life.</p>
-                <a href="https://github.com/philipstubbs13/NewsScrape" class="btn btn-dark mr-2" target="_blank">GitHub Repo</a>
-                <a href="https://www.linkedin.com/in/philipjstubbs/" class="btn btn-dark" target="_blank">LinkedIn</a>
-                <br><br>
-            </div>
-        </div>
-      </div>
-    </div>
-</div>
+{{> articles/footer-block}} 

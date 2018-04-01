@@ -1,29 +1,30 @@
 //Dependencies
 var express = require("express");
 var mongojs = require("mongojs");
-var request = require("request");
-var cheerio = require("cheerio");
 var bodyParser = require("body-parser");
+var logger = require("morgan");
+var mongoose = require("mongoose");
+
+
+// Require all models
+var db = require("./models");
+
+//Define port
+var PORT = 3000;
 
 //Initialize Express
 var app = express();
 
+// Use morgan logger for logging requests
+app.use(logger("dev"));
+
 //Set up a static folder (public) for our web app.
 app.use(express.static("public"));
 
-//Database configuration
-//Save the URL of our database as well as the name of our collection.
-var databaseURL = "scraper";
-var collections = ["scrapedData"];
-
-//Use mongojs to hook the database to the db variable.
-var db = mongojs(databaseURL, collections);
-
-
-//This akes sure that any errors are logged if mongodb runs into an issue.
-db.on("error", function(error) {
-    console.log("Database Error", error);
-});
+// By default mongoose uses callbacks for async queries, we're setting it to use promises (.then syntax) instead
+// Connect to the Mongo DB
+mongoose.Promise = Promise;
+mongoose.connect("mongodb://localhost/newsscraper", {});
 
 //Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -37,79 +38,8 @@ var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars")
 
-//Routes
-//1. At the root path, send a simple hello world message to the browser.
-app.get("/", function(req, res) {
-    res.render("home");
-});
-
-//This route will retrieve all of the data.
-//from the scrapedData collection as a json (this will be populated by the data you scrape using the next route.)
-app.get("/all", function(req, res) {
-    //Query: in our database, go to the articles collection, then "find" everything.
-    db.scrapedData.find({}, function(error, found) {
-        //Log any errors if the server encounters one.
-        if (error) {
-            console.log(error);
-        }
-        //Otherwise, send the result of this query to the browser.
-        else {
-            res.json(found);
-        }
-    });
-});
-
-//When you visit this route, the server will 
-//scrape data from the site of your choice, and save it to MongoDB.
-//TIP: Think back to how you pushed website data
-//into an empty array in the last class. How do you
-//push it intto a MongoDB collection instead?
-app.get("/scrape", function(req, res) {
-
-    request("http://www.espn.com/mens-college-basketball/", function(error, response, html) {
-        var $ = cheerio.load(html);
-
-          // An empty array to save the data that we'll scrape
-        var results = [];
-
-
-        $(".contentItem__content").each(function(i, element){
-            var title = $(this).find(".contentItem__title").text();
-            var link = $(this).find("a").attr("href");
-            // var date = $(this).find(".post__date").text();
-            var summary = $(this).find(".contentItem__subhead").text();
-            // var imgLink = $(element).find("a").find("img").attr("data-srcset").split(",")[0].split(" ")[0];
-            var img = $(this).find(".media-wrapper").find(".media-wrapper_image").find("img").attr("data-default-src");
-            console.log(title);
-            console.log(link);
-            if (title && link) {
-                db.scrapedData.save ({
-                    title: title,
-                    link: link,
-                    summary: summary,
-                    img: img
-                },
-                function(error, saved) {
-                    if (error){
-                        console.log(error);
-                    }
-
-                    else {
-                        console.log(saved);
-                    }
-                });
-                // Save these results in an object that we'll push into the results array we defined earlier
-                // results.push({
-                //     title: title,
-                //     link: link,
-                //     summary: summary
-                //  });
-            }
-        });
-    });
-
-    res.send("Scrape complete");
-});
+// Import routes and give the server access to them.
+require("./controllers/fetch.js")(app);
 
 //Set the app to listen on port 3000
 app.listen(3000, function() {
