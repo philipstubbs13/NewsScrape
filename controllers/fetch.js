@@ -98,7 +98,7 @@ module.exports = function(app) {
                         return res.json(err);
                     });        
             });
-            res.send("Scrape complete");
+            res.json(result);
         });
     });
 

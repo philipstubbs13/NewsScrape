@@ -19,3 +19,7 @@
     background-repeat: no repeat;
     background-size: cover;
 }
+
+#number-articles-found {
+    font-size: 18px;
+}
