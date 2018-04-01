@@ -1,7 +1,32 @@
-
-//Click event for "Save article" button.
-$(".save-article-btn").on("click", function(event) {
+//Click event for scraping new articles.
+$("#scrape-articles").on("click", function(event) {
+    console.log("scrape new articles button clicked");
     console.log("save article button clicked");
+    //Run a GET request to get new scraped articles.
+    $.ajax({
+        method: "GET",
+        url: "/scrape",
+    })
+    //With that done
+    .then(function(data) {
+      //Log the response
+      console.log(data);
+      //If there are no new articles to scrape, tell the user no new articles were found.
+      if (data.length = 0) {
+          console.log("No new articles found.")
+      }
+
+      //Else, scrape articles and tell user the number of new articles that were found.
+      else {
+        console.log(data.length + " new article found.");
+      }
+      //Reload the page to see the updated list of articles.
+      location.reload();
+    });
+});
+
+//Click event for "Save article" button.    console.log("save article button clicked");
+$(".save-article-btn").on("click", function(event) {
     //Grab the id associated with the article.
     var thisId = $(this).attr("data-id");
 
