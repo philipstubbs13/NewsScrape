@@ -1,4 +1,4 @@
-<!--Scraped articles-->
+<!--Saved articles-->
 {{#each articles}}
     <div class="card border-success bg-success mt-5">
         <div class="card-body">
@@ -6,8 +6,8 @@
             <p class="card-text article-summary">{{this.summary}}</p>
             <img class="img-fluid article-img" src="{{this.img}}">
             <br>
-            <a href='{{this.link}}' target="_blank"><button class="btn btn-primary btn-dark mt-4">Continue reading</button></a>
-            <button class="btn btn-dark ml-3 mt-4 save-article-btn" data-id="{{this._id}}">Save article</button>
+            <button class="btn btn-primary btn-dark mt-4 remove-saved-btn" data-id="{{this._id}}">Remove from saved</button></a>
+            <button class="btn btn-dark ml-3 mt-4 add-notes-btn">Article notes</button>
         </div>
     </div>
 {{/each}}

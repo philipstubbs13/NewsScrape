@@ -3,6 +3,7 @@ var db = require("../models");
 
 //Require express
 var express = require("express");
+var mongojs = require("mongojs");
 
 //Scraping tools
 var cheerio = require("cheerio");
@@ -29,14 +30,26 @@ module.exports = function(app) {
 
     //At the /saved path, display/render saved.handlebars file.
     app.get("/saved", function(req, res) {
-        res.render("saved");
+        //Query: in our database, go to the articles collection, then "find" everything.
+        db.Headline.find({saved: true}, function(error, found) {
+            //Log any errors if the server encounters one.
+            if (error) {
+                console.log(error);
+            }
+            //Otherwise, send the result of this query to the browser.
+            else {
+                res.render("saved", {
+                    articles: found,
+                    });
+            }
+        });
     });
 
     //This route will retrieve all of the data.
     //from the scrapedData collection as a json (this will be populated by the data you scrape using the next route.)
     app.get("/all", function(req, res) {
         //Query: in our database, go to the articles collection, then "find" everything.
-        db.Headline.find({saved: false}, function(error, found) {
+        db.Headline.find({}, function(error, found) {
             //Log any errors if the server encounters one.
             if (error) {
                 console.log(error);
@@ -85,4 +98,31 @@ module.exports = function(app) {
             res.json(result);
         });
     });
+
+    // Mark a article as saved.
+    app.put("/marksaved/:id", function(req, res) {
+        // Remember: when searching by an id, the id needs to be passed in
+        // as (mongojs.ObjectId(IDYOUWANTTOFIND))
+        updateSaved(true,req, res);
+    });
+  
+    // Mark an article as not saved.
+    app.put("/markunsaved/:id", function(req, res) {
+        // Remember: when searching by an id, the id needs to be passed in
+        updateSaved(false,req, res);
+    });
+
+    function updateSaved(isSaved, req, res) {
+        db.Headline.findOneAndUpdate({ _id: req.params.id }, { saved: isSaved },
+            function(err, data) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                res.json(data);
+                res.end();
+                }
+        });
+    }
+
 }
