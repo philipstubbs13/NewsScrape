@@ -114,16 +114,21 @@ $(window).load(function() {
     $(".delete-article-btn").on("click", function(event) {
         console.log("delete button clicked");
         var id = $(this).data("id");
+        //Show delete article confirmation modal.
+        $('#confirm-delete-modal').modal('show');
 
-        // Send the DELETE request using ajax.
-        $.ajax("/articles/" + id, {
-            type: "DELETE",
-        }).then(
-            function() {
-            console.log("deleted article", id);
-            // Reload the page to get the updated list of articles.
-            location.reload();
-            }
-        );
+        //If user confirms that they want to delete the article, then go ahead and delete the article from the database.
+        $("#delete-confirm-button").on("click", function(event) {
+            // Send the DELETE request using ajax.
+            $.ajax("/articles/" + id, {
+                type: "DELETE",
+            }).then(
+                function() {
+                console.log("deleted article", id);
+                // Reload the page to get the updated list of articles.
+                location.reload();
+                }
+            );
+            });
         });
 });
