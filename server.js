@@ -21,16 +21,26 @@ app.use(logger("dev"));
 //Set up a static folder (public) for our web app.
 app.use(express.static("public"));
 
-// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://ds127129.mlab.com:27129/heroku_1kjtsvrd";
-//mongodb://ds127129.mlab.com:27129/heroku_1kjtsvrd
-//mongodb://localhost/newsscraper
+// // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://ds127129.mlab.com:27129/heroku_1kjtsvrd";
+// //mongodb://ds127129.mlab.com:27129/heroku_1kjtsvrd
+// //mongodb://localhost/newsscraper
 
 
-// By default mongoose uses callbacks for async queries, we're setting it to use promises (.then syntax) instead
-// Connect to the Mongo DB
+// // By default mongoose uses callbacks for async queries, we're setting it to use promises (.then syntax) instead
+// // Connect to the Mongo DB
+// mongoose.Promise = Promise;
+// mongoose.connect(MONGODB_URI, {});
+
+//setting up the database
+const config = require('./config/database');
 mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI, {});
+mongoose
+  .connect(config.database)
+  .then( result => {
+    console.log(`Connected to database '${result.connections[0].name}' on ${result.connections[0].host}:${result.connections[0].port}`)
+  })
+  .catch(err => console.log('There was an error with your connection:', err));
 
 //Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
