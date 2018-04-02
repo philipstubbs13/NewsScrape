@@ -141,7 +141,70 @@ $(window).load(function() {
                 location.reload();
                 }
             );
-            });
         });
+    });
+
+    //Click event to open the article notes/comments modal.
+    $(".add-notes-btn").on("click", function(event) {
+        console.log("add notes button clicked");
+        //Show modal where users can enter and submit comments.
+        $('#comments-modal').modal('show');
+
+        //Empty the notes from the note section
+        $("#comments").empty();
+        $("#comments-footer").empty();
+        //Save the id from the leave a comment button.
+        var thisId = $(this).data("id");
+
+        //Now make an ajax call for the Article
+        $.ajax({
+            method: "GET",
+            url: "/articles/" + thisId
+        })
+            //With that done, add the note information to the page
+            .then(function(data) {
+                console.log(data);
+                //The title of the article
+                $("#comments-title").text("Leave a comment");
+                //A button to submit a new note, with the id of the article saved to it
+                var submitCommentBtn = $("<button data-id='" + thisId + "'>");
+                submitCommentBtn.addClass("btn btn-secondary save-comment-button").attr("id", "save-comment-button").data("dismiss", "modal").text("Save comment");
+                $(".comments-footer").append(submitCommentBtn);
+
+            //If there's a note in the article
+            if (data.note) {
+                // Place the body of the note in the body textarea
+                $("#commentbody").val(data.note.body);
+            }
+            });
+    });
+
+    //When you click the save comment button
+    $(document).on("click", "#save-comment-button", function() {
+        //Grab the id associated with the article from the submit button
+        var thisId = $(this).attr("data-id");
+    
+        // Run a POST request to change the note, using what's entered in the inputs
+        $.ajax({
+        method: "POST",
+        url: "/articles/" + thisId,
+        data: {
+            // Value taken from note textarea
+            body: $("#commentbody").val()
+        }
+        })
+        // With that done
+        .then(function(data) {
+            //Log the response
+            console.log(data);
+            //Empty the notes section
+            $("#comments").empty();
+            
+        });
+    
+        // Also, remove the values entered in the input and textarea for note entry
+        $("#commentbody").val("");
+    });
+  
 });
 

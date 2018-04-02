@@ -20,11 +20,11 @@
     background-size: cover;
 }
 
-body {
+/* body { */
     /* background-image: url("https://www.freepik.com/free-photos-vectors/background");
     <a href="https://www.freepik.com/free-photos-vectors/background">Background vector created by Freepik</a>
     background-repeat: no repeat; */
-}
+/* } */
 
 #number-articles-found {
     font-size: 18px;
