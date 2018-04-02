@@ -52,18 +52,16 @@ mongoose.Promise = Promise;
 //  }, 1200000);
 
  // Mongoose (orm) connects to our mongo db and allows us to have access to the MongoDB commands for easy CRUD 
-let uri = 'mongodb://heroku_1kjtsvrd:gh7k0kdpcs5q60s34def8ho44o@ds127129.mlab.com:27129/heroku_1kjtsvrd';
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscraper";
 
-mongoose.connect(uri);
-
-let db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-
-// display a console message when mongoose has a conn to the db
-db.once("open", function () {
-  console.log("Mongoose connection successful.");
+// Set mongoose to leverage built in JavaScript ES6 Promises
+// Connect to the Mongo DB
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI, {
+  useMongoClient: true
 });
+
 
 //Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
