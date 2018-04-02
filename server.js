@@ -22,7 +22,9 @@ app.use(logger("dev"));
 app.use(express.static("public"));
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscraper";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://ds127129.mlab.com:27129/heroku_1kjtsvrd";
+//mongodb://ds127129.mlab.com:27129/heroku_1kjtsvrd
+//mongodb://localhost/newsscraper
 
 
 // By default mongoose uses callbacks for async queries, we're setting it to use promises (.then syntax) instead
