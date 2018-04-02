@@ -10,7 +10,7 @@ var mongoose = require("mongoose");
 var db = require("./models");
 
 //Define port
-var PORT = 3000;
+var port = process.env.PORT || 3000;
 
 //Initialize Express
 var app = express();
@@ -42,6 +42,7 @@ mongoose
   })
   .catch(err => console.log('There was an error with your connection:', err));
 
+  //https://stackoverflow.com/questions/45667535/why-heroku-kills-my-process-with-status-143?rq=1
   var reqTimer = setTimeout(function wakeUp() {
     request("https://hoops-scraper.herokuapp.com", function() {
        console.log("WAKE UP DYNO");
@@ -65,6 +66,6 @@ app.set("view engine", "handlebars")
 require("./controllers/fetch.js")(app);
 
 //Set the app to listen on port 3000
-app.listen(3000, function() {
+app.listen(function() {
     console.log("App running on port 3000");
 })
