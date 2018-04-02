@@ -52,13 +52,13 @@ mongoose.Promise = Promise;
 //  }, 1200000);
 
  // Mongoose (orm) connects to our mongo db and allows us to have access to the MongoDB commands for easy CRUD 
-mongoose.connect("mongodb://ds127129.mlab.com:27129/heroku_1kjtsvrd");
-var db = mongoose.connection;
+let uri = 'mongodb://heroku_1kjtsvrd:gh7k0kdpcs5q60s34def8ho44o@ds127129.mlab.com:27129/heroku_1kjtsvrd';
 
-// if any errors than console errors
-db.on("error", function (error) {
-  console.log("Mongoose Error: ", error);
-});
+mongoose.connect(uri);
+
+let db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
 
 // display a console message when mongoose has a conn to the db
 db.once("open", function () {
