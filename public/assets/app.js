@@ -85,33 +85,40 @@ $(window).load(function() {
         })
         //With that done
         .then(function(data) {
-        //Log the response
-        console.log(data);
-        
-        //When user closes modal, reload the page.
-        $("#article-saved-close-button").on("click", function(event) {
-            //Reload the page to see the updated list of atricles.
-            location.reload();
+            //Log the response
+            console.log(data);
+            
+            //When user closes modal, reload the page.
+            $("#article-saved-close-button").on("click", function(event) {
+                //Reload the page to see the updated list of atricles.
+                location.reload();
+            });
         });
     });
+
 
     //Click event for "Remove from saved" button.
     $(".remove-saved-btn").on("click", function(event) {
         console.log("remove saved button clicked");
         //Grab the id associated with the article.
         var thisId = $(this).attr("data-id");
+        //Show message to the user that asks if they want to actually remove the article from the saved articles list.
+        $('#remove-save-success-modal').modal('show');
 
-        //Run a PUT request to update saved value from true to false in the database.
-        $.ajax({
-            method: "PUT",
-            url: "/markunsaved/" + thisId
-        })
-        //With that done
-        .then(function(data) {
-            //Log the response
-            console.log(data);
-            //Reload the page to get the updated list of articles.
-            location.reload();
+        //If the user confirms that they do want to remove the article, then go ahead and remove the article from the saved articles list.
+        $("#remove-saved-article-button").on("click", function(event) {
+            //Run a PUT request to update saved value from true to false in the database.
+            $.ajax({
+                method: "PUT",
+                url: "/markunsaved/" + thisId
+            })
+            //With that done
+            .then(function(data) {
+                //Log the response
+                console.log(data);
+                //Reload the page to get the updated list of articles.
+                location.reload();
+            });
         });
     });
 
@@ -138,4 +145,3 @@ $(window).load(function() {
         });
 });
 
-});
