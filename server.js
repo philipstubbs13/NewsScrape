@@ -42,6 +42,13 @@ mongoose
   })
   .catch(err => console.log('There was an error with your connection:', err));
 
+  var reqTimer = setTimeout(function wakeUp() {
+    request("https://hoops-scraper.herokuapp.com", function() {
+       console.log("WAKE UP DYNO");
+    });
+    return reqTimer = setTimeout(wakeUp, 1200000);
+ }, 1200000);
+
 //Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
