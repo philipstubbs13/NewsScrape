@@ -4,13 +4,14 @@ var mongojs = require("mongojs");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var request = require("request");
 
 
 // Require all models
 var db = require("./models");
 
 //Define port
-var port = process.env.PORT || 3000;
+var PORT = process.env.PORT || 3000;
 
 //Initialize Express
 var app = express();
@@ -33,22 +34,36 @@ app.use(express.static("public"));
 // mongoose.connect(MONGODB_URI, {});
 
 //setting up the database
-const config = require('./config/database');
+// const config = require('./config/database');
 mongoose.Promise = Promise;
-mongoose
-  .connect(config.database)
-  .then( result => {
-    console.log(`Connected to database '${result.connections[0].name}' on ${result.connections[0].host}:${result.connections[0].port}`)
-  })
-  .catch(err => console.log('There was an error with your connection:', err));
+// mongoose
+//   .connect(config.database)
+//   .then( result => {
+//     console.log(`Connected to database '${result.connections[0].name}' on ${result.connections[0].host}:${result.connections[0].port}`)
+//   })
+//   .catch(err => console.log('There was an error with your connection:', err));
 
   //https://stackoverflow.com/questions/45667535/why-heroku-kills-my-process-with-status-143?rq=1
-  var reqTimer = setTimeout(function wakeUp() {
-    request("https://hoops-scraper.herokuapp.com", function() {
-       console.log("WAKE UP DYNO");
-    });
-    return reqTimer = setTimeout(wakeUp, 1200000);
- }, 1200000);
+//   var reqTimer = setTimeout(function wakeUp() {
+//     request("https://hoops-scraper.herokuapp.com", function() {
+//        console.log("WAKE UP DYNO");
+//     });
+//     return reqTimer = setTimeout(wakeUp, 1200000);
+//  }, 1200000);
+
+ // Mongoose (orm) connects to our mongo db and allows us to have access to the MongoDB commands for easy CRUD 
+mongoose.connect("mongodb://ds127129.mlab.com:27129/heroku_1kjtsvrd");
+var db = mongoose.connection;
+
+// if any errors than console errors
+db.on("error", function (error) {
+  console.log("Mongoose Error: ", error);
+});
+
+// display a console message when mongoose has a conn to the db
+db.once("open", function () {
+  console.log("Mongoose connection successful.");
+});
 
 //Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -66,6 +81,6 @@ app.set("view engine", "handlebars")
 require("./controllers/fetch.js")(app);
 
 //Set the app to listen on port 3000
-app.listen(function() {
+app.listen(PORT, function() {
     console.log("App running on port 3000");
 })
