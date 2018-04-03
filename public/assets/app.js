@@ -175,6 +175,9 @@ $(window).load(function() {
                 // Place the body of the note in the body textarea
                 var userNote = $("<div>");
                 userNote.append(data.note.body).addClass("mt-4");
+                var userCommentsHeading = $("<h5>");
+                userCommentsHeading.text("Article comments");
+                $("#user-comments").append(userCommentsHeading);
                 $("#user-comments").append(userNote);
                 // var removeComment = $("<button>");
                 // removeComment.text("Remove").attr("id", data.note._id).addClass("btn btn-primary");
