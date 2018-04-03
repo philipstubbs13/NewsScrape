@@ -146,13 +146,11 @@ $(window).load(function() {
 
     //Click event to open the article notes/comments modal.
     $(".add-notes-btn").on("click", function(event) {
+        $("#user-comments").empty();
+        $("#save-comment-button").remove();
         console.log("add notes button clicked");
         //Show modal where users can enter and submit comments.
         $('#comments-modal').modal('show');
-
-        //Empty the notes from the note section
-        $("#comments").empty();
-        $("#comments-footer").empty();
         //Save the id from the leave a comment button.
         var thisId = $(this).data("id");
 
@@ -173,8 +171,15 @@ $(window).load(function() {
 
             //If there's a note in the article
             if (data.note) {
+                console.log(data.note);
                 // Place the body of the note in the body textarea
-                $("#commentbody").val(data.note.body);
+                var userNote = $("<div>");
+                userNote.append(data.note.body).addClass("mt-4");
+                $("#user-comments").append(userNote);
+                // var removeComment = $("<button>");
+                // removeComment.text("Remove").attr("id", data.note._id).addClass("btn btn-primary");
+                // userNote.append("<br>");
+                // userNote.append(removeComment);
             }
             });
     });
@@ -199,11 +204,15 @@ $(window).load(function() {
             console.log(data);
             //Empty the notes section
             $("#comments").empty();
+            $('#comments-modal').modal('toggle');
+            $("#user-comments").empty();
+            $("#save-comment-button").remove();
             
         });
     
         // Also, remove the values entered in the input and textarea for note entry
         $("#commentbody").val("");
+        $("#save-comment-button").remove();
     });
   
 });
