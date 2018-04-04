@@ -44,5 +44,30 @@ module.exports = function(app) {
             res.json(err);
         });
     });
+
+    // Create a new note
+    app.post("/notes/save/:id", function(req, res) {
+        console.log(req.body)
+        //And save the new note the db
+        db.Note.create(req.body)
+        .then(function(dbNote) {
+        // Use the article id to find and update it's notes
+        db.Headline.findOneAndUpdate({ "_id": req.params.id }, {$push: { "notes": note } })
+            // Execute the above query
+            .exec(function(err) {
+                // Log any errors
+                if (err) {
+                console.log(err);
+                res.send(err);
+                }
+                else {
+                // Or send the note to the browser
+                res.send(note);
+                }
+            });
+        });
+    });
 }
+    
+
   

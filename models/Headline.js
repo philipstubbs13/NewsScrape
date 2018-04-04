@@ -1,11 +1,11 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 // Save a reference to the Schema constructor
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 // Using the Schema constructor, create a new HeadlineSchema object
 // This is similar to a Sequelize model
-var HeadlineSchema = new Schema({
+const HeadlineSchema = new Schema({
     // `title` is required and of type String
     //unique: true ensures that we don't have duplicate articles in the database.
     title: {
@@ -44,7 +44,7 @@ var HeadlineSchema = new Schema({
 });
 
 // This creates our model from the above schema, using mongoose's model method
-var Headline = mongoose.model("Headline", HeadlineSchema);
+const Headline = mongoose.model("Headline", HeadlineSchema);
 
 // Export the Article model
 module.exports = Headline;

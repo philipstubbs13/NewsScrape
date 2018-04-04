@@ -3,20 +3,20 @@ $(window).load(function() {
     //Create variables to keep track of the number of articles in our database every time we do a new scrape.
     //previous is the number of articles before doing a new scrape.
     //current is the number of articles after during a new scrape.
-    var previous = 0;
-    var current = null;
+    let previous = 0;
+    let current = null;
 
     //Click event for scraping new articles.
-    $("#scrape-articles").on("click", function(event) {
+    $("#scrape-articles").on("click", (event) => {
         //Empty out the modal that shows the number of articles found after each scrape.
         $("#number-articles-found").empty();
         //Before we do a new scrape, run a GET request to get the total number of articles currently in our database.
         $.ajax({
             method: "GET",
-            url: "/all",
+            url: "/all"
         })
         //With that done
-        .then(function(data) {
+        .then((data) => {
             //Log the response
             console.log(data);
             //Set the current variable to data.length, which is the current number of articles in our database.
@@ -30,21 +30,21 @@ $(window).load(function() {
                 method:"GET",
                 url: "/scrape"
             })
-            //With that scraping done...
-            .then(function(data) {
+            //When the scraping is done...
+            .then((data) => {
                 //After scraping is done, do another get request to get the updated number of articles in our database.
                 //If this number did not change, we did not scrape any new articles from the site.
                 $.ajax({
                     method: "GET",
                     url: "/all"
                 })
-                .then(function(data){
+                .then((data) => {
                     //Set current to the new number of articles in the database.
                     current = data.length;
                     console.log(current);
                     console.log(previous);
                     //If the current number of articles in the database is greater than the previous number of articles, 
-                    //then, we did scrape at least one new article from the website.
+                    //then, we know that we did scrape at least one new article from the website.
                     if (previous !== current) {
                         //Open a modal that tells the user the number of new articles that were found/scraped.
                         $("#number-articles-found").text((current - previous) + " article(s) found.").addClass("text-white");
@@ -62,16 +62,14 @@ $(window).load(function() {
                     }
 
                     //When the user closes the modal that displays the number of articles found, reload the page.
-                    $("#articles-found-modal-close").on("click", function(event) {
-                        //Reload the page to see the updated list of articles.
-                        location.reload();
-                    });
+                    //Reload the page to see the updated list of articles.
+                    $("#articles-found-modal-close").on("click", (event) => location.reload());
                 })
             })
         });
     });
 
-    //Click event for "Save article" button.    console.log("save article button clicked");
+    //Click event for "Save article" button.    
     $(".save-article-btn").on("click", function(event) {
         //Grab the id associated with the article.
         var thisId = $(this).attr("data-id");
@@ -190,32 +188,58 @@ $(window).load(function() {
     //When you click the save comment button
     $(document).on("click", "#save-comment-button", function() {
         //Grab the id associated with the article from the submit button
-        var thisId = $(this).attr("data-id");
+        // var thisId = $(this).attr("data-id");
     
-        // Run a POST request to change the note, using what's entered in the inputs
-        $.ajax({
-        method: "POST",
-        url: "/articles/" + thisId,
-        data: {
-            // Value taken from note textarea
-            body: $("#commentbody").val()
-        }
-        })
-        // With that done
-        .then(function(data) {
-            //Log the response
-            console.log(data);
-            //Empty the notes section
-            $("#comments").empty();
-            $('#comments-modal').modal('toggle');
-            $("#user-comments").empty();
-            $("#save-comment-button").remove();
+        // // Run a POST request to change the note, using what's entered in the inputs
+        // $.ajax({
+        // method: "POST",
+        // url: "/articles/" + thisId,
+        // data: {
+        //     // Value taken from note textarea
+        //     body: $("#commentbody").val()
+        // }
+        // })
+        // // With that done
+        // .then(function(data) {
+        //     //Log the response
+        //     console.log(data);
+        //     //Empty the notes section
+        //     $("#comments").empty();
+        //     $('#comments-modal').modal('toggle');
+        //     $("#user-comments").empty();
+        //     $("#save-comment-button").remove();
             
-        });
+        // });
     
         // Also, remove the values entered in the input and textarea for note entry
-        $("#commentbody").val("");
-        $("#save-comment-button").remove();
+        // $("#commentbody").val("");
+        // $("#save-comment-button").remove();
+
+        var thisId = $(this).attr("data-id");
+        if (!$("#commentbody").val()) {
+            alert("please enter a note to save")
+        }
+        else {
+        $.ajax({
+                method: "POST",
+                url: "/notes/save/" + thisId,
+                data: {
+                    text: $("#commentbody").val(), 
+                    headline: thisId
+                }
+            }).done(function(data) {
+                // Log the response
+                console.log(data);
+                // Empty the notes section
+                $("#commentbody").val("");
+                $("#comments").empty();
+                $('#comments-modal').modal('toggle');
+                $("#user-comments").empty();
+                $("#save-comment-button").remove();
+                $('#comments-modal').modal('toggle');
+                window.location = "/saved"
+            });
+        }
     });
   
 });
