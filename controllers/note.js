@@ -1,4 +1,4 @@
-// Import the model (burger.js). 
+// Import the model 
 var db = require("../models");
 
 //Require express
@@ -9,7 +9,7 @@ var mongojs = require("mongojs");
 
 module.exports = function(app) {
 
-    // Route for grabbing a specific Article by id, populate it with a comment.
+    //Route for grabbing a specific Article by id, populate it with a comment.
     app.get("/articles/:id", function(req, res) {
         // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
         db.Headline.findOne({ _id: req.params.id })
@@ -24,47 +24,48 @@ module.exports = function(app) {
             res.json(err);
         });
     });
-    
-    // Route for saving/updating an Article's associated Note
-    app.post("/articles/:id", function(req, res) {
-        // Create a new note and pass the req.body to the entry
+
+    //Route for getting/finding all notes in the database associated with a particular headline/article.
+    app.get("/notes/:id", function (req, res) {
+        if(req.params.id) {
+            db.Note.find({
+                "headline": req.params.id
+            })
+            .exec(function (error, doc) {
+                if (error) {
+                    console.log(error)
+                } else {
+                    res.send(doc);
+                }
+            });
+        }
+    });
+
+    //Create/post a new comment
+    app.post("/notes", function (req, res) {
+    if (req.body) {
         db.Note.create(req.body)
         .then(function(dbNote) {
-            // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-            // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-            // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-            return db.Headline.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id });
-        })
-        .then(function(dbHeadline) {
-            // If we were able to successfully update an Article, send it back to the client
-            res.json(dbHeadline);
+            //If we were able to successfully create a note, send it back to the client.
+            res.json(dbNote);
         })
         .catch(function(err) {
             // If an error occurred, send it to the client
             res.json(err);
         });
+    }
     });
 
-    // Create a new note
-    app.post("/notes/save/:id", function(req, res) {
-        console.log(req.body)
-        //And save the new note the db
-        db.Note.create(req.body)
-        .then(function(dbNote) {
-        // Use the article id to find and update it's notes
-        db.Headline.findOneAndUpdate({ "_id": req.params.id }, {$push: { "notes": note } })
-            // Execute the above query
-            .exec(function(err) {
-                // Log any errors
-                if (err) {
-                console.log(err);
-                res.send(err);
-                }
-                else {
-                // Or send the note to the browser
-                res.send(note);
-                }
-            });
+    //find and update the note
+    app.get("/notepopulate", function (req, res) {
+        Note.find({
+            "_id": req.params.id
+        }, function (error, doc) {
+            if (error) {
+                console.log(error);
+            } else {
+                res.send(doc);
+            }
         });
     });
 }

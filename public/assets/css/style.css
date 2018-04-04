@@ -26,10 +26,14 @@
     background-repeat: no repeat; */
 /* } */
 
-#number-articles-found {
+#number-articles-found, .comment-section-text {
     font-size: 18px;
 }
 
 .card, .social-btn {
     background-color: #00bade;
+}
+
+.user-note-div {
+    border-bottom: 3px solid white; margin-top:20px;}
 }

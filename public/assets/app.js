@@ -144,103 +144,93 @@ $(window).load(function() {
 
     //Click event to open the article notes/comments modal.
     $(".add-notes-btn").on("click", function(event) {
+        //Empty out the user comments (if not done already);
         $("#user-comments").empty();
         $("#save-comment-button").remove();
-        console.log("add notes button clicked");
         //Show modal where users can enter and submit comments.
         $('#comments-modal').modal('show');
         //Save the id from the leave a comment button.
         var thisId = $(this).data("id");
 
-        //Now make an ajax call for the Article
+        //Now make an ajax call to get the comments associated with the article.
         $.ajax({
             method: "GET",
-            url: "/articles/" + thisId
+            url: "/notes/" + thisId
         })
-            //With that done, add the note information to the page
+            //With that done, add the comment information to the page
             .then(function(data) {
                 console.log(data);
                 //The title of the article
                 $("#comments-title").text("Leave a comment");
-                //A button to submit a new note, with the id of the article saved to it
-                var submitCommentBtn = $("<button data-id='" + thisId + "'>");
-                submitCommentBtn.addClass("btn btn-secondary save-comment-button").attr("id", "save-comment-button").data("dismiss", "modal").text("Save comment");
+                //A button to submit a new comment, with the id of the article saved to it
+                var submitCommentBtn = $(`<button data-id= ${thisId}>`);
+                submitCommentBtn.addClass("btn btn-secondary save-comment-button").attr("id", "save-comment-button").data("dismiss", "modal").text("Post comment");
                 $(".comments-footer").append(submitCommentBtn);
 
-            //If there's a note in the article
-            if (data.note) {
-                console.log(data.note);
-                // Place the body of the note in the body textarea
-                var userNote = $("<div>");
-                userNote.append(data.note.body).addClass("mt-4");
+                //Add heading to article comments section in the modal.
                 var userCommentsHeading = $("<h5>");
-                userCommentsHeading.text("Article comments");
+                userCommentsHeading.text("Article comments").addClass("text-center");
+                //If the article has at least one comment, display the comment(s) to the user.
                 $("#user-comments").append(userCommentsHeading);
-                $("#user-comments").append(userNote);
-                // var removeComment = $("<button>");
-                // removeComment.text("Remove").attr("id", data.note._id).addClass("btn btn-primary");
-                // userNote.append("<br>");
-                // userNote.append(removeComment);
-            }
+                if (data.length) {
+                    console.log(data);
+                    //Place the notes in the article comments section of the modal.
+                    for (var i = 0; i < data.length; i++) {
+                        var userNoteDiv = $("<div>");
+                        userNoteDiv.addClass("user-note-div");
+                        var userNote = $("<p>");
+                        userNote.text(data[i].body).addClass("mt-5");
+                        userNoteDiv.append(userNote);
+                        $("#user-comments").append(userNoteDiv);
+                        //Create delete comment button for each comment.
+                        var removeComment = $("<button>");
+                        removeComment.text("Delete comment").attr("id", data._id).addClass("btn btn-primary mb-4");
+                        userNoteDiv.append(removeComment);
+                    }
+                }
+
+                //If there are no comments associated with this article, tell the user that there are no comments for this article yet.
+                else {
+                    var noArticleComments = $("<h5>");
+                    noArticleComments.text("No comments have been posted for this article yet.").addClass("mt-4 text-center");
+                    var noUserPostYet = $("<p>");
+                    noUserPostYet.text("Be the first one to leave a comment.").addClass("text-center comment-section-text");
+                    $("#user-comments").append(noArticleComments).append(noUserPostYet);
+                } 
             });
     });
 
     //When you click the save comment button
     $(document).on("click", "#save-comment-button", function() {
         //Grab the id associated with the article from the submit button
-        // var thisId = $(this).attr("data-id");
-    
-        // // Run a POST request to change the note, using what's entered in the inputs
-        // $.ajax({
-        // method: "POST",
-        // url: "/articles/" + thisId,
-        // data: {
-        //     // Value taken from note textarea
-        //     body: $("#commentbody").val()
-        // }
-        // })
-        // // With that done
-        // .then(function(data) {
-        //     //Log the response
-        //     console.log(data);
-        //     //Empty the notes section
-        //     $("#comments").empty();
-        //     $('#comments-modal').modal('toggle');
-        //     $("#user-comments").empty();
-        //     $("#save-comment-button").remove();
-            
-        // });
-    
-        // Also, remove the values entered in the input and textarea for note entry
-        // $("#commentbody").val("");
-        // $("#save-comment-button").remove();
-
         var thisId = $(this).attr("data-id");
+        //If the body of the comment is empty, notify the user to enter a comment.
         if (!$("#commentbody").val()) {
-            alert("please enter a note to save")
+            alert("please enter a comment");
+            // $('#enter-comments-modal').modal('toggle');
         }
         else {
-        $.ajax({
-                method: "POST",
-                url: "/notes/save/" + thisId,
-                data: {
-                    text: $("#commentbody").val(), 
-                    headline: thisId
-                }
+            $.ajax({
+                    method: "POST",
+                    url: "/notes",
+                    data: {
+                        body: $("#commentbody").val(), 
+                        headline: thisId
+                    }
             }).done(function(data) {
-                // Log the response
+                //Log the response
                 console.log(data);
-                // Empty the notes section
+                //Empty the notes section and close the modal.
+                //Also, remove the values entered in the input and textarea for note entry
                 $("#commentbody").val("");
                 $("#comments").empty();
                 $('#comments-modal').modal('toggle');
                 $("#user-comments").empty();
                 $("#save-comment-button").remove();
-                $('#comments-modal').modal('toggle');
+                $('#comments-modal').modal('hide');
                 window.location = "/saved"
             });
         }
     });
-  
 });
 
