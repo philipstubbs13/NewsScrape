@@ -37,8 +37,8 @@ module.exports = function(app) {
     
                 //I was having issues with having articles that have "undefined" links.
                 //So, I am adding a conditional here to check if the article link is undefined or not.
-                //Only add articles to the database that have a valid link.
-                if ($(this).find("a").attr("href") !== undefined) {
+                //Only add articles to the database that have a valid link and the link starts with /mens-college-basketball.
+                if ($(this).find("a").attr("href") !== undefined && $(this).find("a").attr("href").startsWith("/mens-college-basketball")) {
                     //Create a new article in the database using the result object built from scraping...
                     db.Headline.create(result)
                         .then(function(dbHeadline) {
