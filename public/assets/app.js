@@ -149,6 +149,7 @@ $(window).load(function() {
         //Empty out the user comments (if not done already);
         $("#user-comments").empty();
         $("#save-comment-button").remove();
+        $(".post-comment-error").empty();
         //Show modal where users can enter and submit comments.
         $('#comments-modal').modal('show');
         //Save the id from the leave a comment button.
@@ -208,8 +209,9 @@ $(window).load(function() {
         var thisId = $(this).attr("data-id");
         //If the body of the comment is empty, notify the user to enter a comment.
         if (!$("#commentbody").val()) {
-            alert("please enter a comment");
-            // $('#enter-comments-modal').modal('toggle');
+            var postCommentError = $("<p>");
+            postCommentError.text("No comment entered. Enter a comment to continue.").addClass("text-white post-comment-error");
+            $(".form-group").append(postCommentError);
         }
         else {
             $.ajax({
@@ -226,6 +228,7 @@ $(window).load(function() {
                 //Also, remove the values entered in the input and textarea for note entry
                 $("#commentbody").val("");
                 $("#comments").empty();
+                $(".post-comment-error").empty();
                 $('#comments-modal').modal('toggle');
                 $("#user-comments").empty();
                 $("#save-comment-button").remove();
@@ -241,7 +244,11 @@ $(window).load(function() {
         console.log("delete button clicked");
         var id = $(this).attr("id");
         console.log(id);
+        //Show delete comment confirmation modal.
+        $('#confirm-delete-comment-modal').modal('show');
 
+        //If user confirms that they want to delete the comment, then go ahead and delete the comment from the database.
+        $("#delete-comment-confirm-button").on("click", function(event) {
             // Send the DELETE request using ajax.
             $.ajax("/notes/" + id, {
                 type: "DELETE",
@@ -252,6 +259,7 @@ $(window).load(function() {
                 location.reload();
                 }
             );
+        });
     });
 });
 
