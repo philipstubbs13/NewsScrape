@@ -50,6 +50,7 @@ app.set("view engine", "handlebars")
 
 // Import routes and give the server access to them.
 require("./controllers/fetch.js")(app);
+require("./controllers/headline.js")(app);
 require("./controllers/note.js")(app);
 
 //Set the app to listen on port 3000
