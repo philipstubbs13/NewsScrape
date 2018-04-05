@@ -42,13 +42,14 @@ https://hoops-scraper.herokuapp.com/
  
 ### <a name="how-app-works"></a> How the app works
 When you go to the home page of the app, you will see a list of scraped articles that come from the following site:
-http://www.espn.com/mens-college-basketball/. 
+http://www.espn.com/mens-college-basketball/.
 
+ESPN men's college basketball page
 <img src="readme_images/espn.png">
 
-Each scraped article you see on the home page is saved to the application database. If you want to check for new articles that haven't been scraped from the ESPN men's college basketball site yet, you can click <b>Scrape new articles</b> at the top of the home page.
+Each scraped article on the home page of the application is saved to the application database. If you want to check for new articles that haven't been scraped from the ESPN men's college basketball site yet, you can click <b>Scrape new articles</b> at the top of the home page.
 
-<img src="readme_images/scrape_new_articles.png">
+<img src="readme_images/scape_new_articles.png">
 
 When you click <b>Scrape new articles</b>, the app first checks the database to see what article titles already exist, which ensures duplicate articles are not added to the database. Then, the app goes ahead and scrapes the site for new articles. If there are new article titles that are not stored in the database already, the app grabs the article information (headline, summary, photo, and link) and adds it to the database. 
 
@@ -58,7 +59,7 @@ Because the app is basically performing three GET requests (one request to get a
 
 If no new articles are found, the app will tell you that no new articles were found from the latest scrape.
 
-<img src="readme_images/no_articles>
+<img src="readme_images/no_articles.png">
 
 After you scrape any new articles, you can scroll through the home page to view all the articles. For each article, there are three options to choose from. You can continue reading, which takes you to the actual article on http://www.espn.com/mens-college-basketball/. 
 
@@ -174,10 +175,10 @@ The first step is to clone the project repository to a local directory on your c
 <pre>
     mongod
 </pre>
-<p><b>Note:</b> You want to keep mongod running in the background during development.</p>
+<p><b>Note:</b> You want to keep the mongod process running in the background during development.</p>
 
 ### <a name=mongoshell></a> 5. Start the MongoDB shell
-<p>In a separate terminal window, run the following comand to start up the MongoDB shell</p>
+<p>In a separate terminal window, run the following command to start up the MongoDB shell</p>
 <pre>
 mongo
 </pre>
