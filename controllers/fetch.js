@@ -1,4 +1,4 @@
-// Import the model (burger.js). 
+// Import the model 
 var db = require("../models");
 
 //Require express
