@@ -87,16 +87,21 @@ module.exports = function(app) {
                 //Save the image/photo associated with each article from the site to the result object as result.img.
                 result.img = $(this).find(".media-wrapper").find(".media-wrapper_image").find("img").attr("data-default-src");
     
-                //Create a new article in the database using the result object built from scraping...
-                db.Headline.create(result)
-                    .then(function(dbHeadline) {
-                        //View the added result in the console.
-                        console.log(dbHeadline);
-                    })
-                    .catch(function(err) {
-                        //If an error occured, send it to the client.
-                        return res.json(err);
-                    });        
+                //I was having issues with having articles that have "undefined" links.
+                //So, I am adding a conditional here to check if the article link is undefined or not.
+                //Only add articles to the database that have a valid link.
+                if ($(this).find("a").attr("href") !== undefined) {
+                    //Create a new article in the database using the result object built from scraping...
+                    db.Headline.create(result)
+                        .then(function(dbHeadline) {
+                            //View the added result in the console.
+                            console.log(dbHeadline);
+                        })
+                        .catch(function(err) {
+                            //If an error occured, send it to the client.
+                            return res.json(err);
+                        });     
+                }   
             });
             res.json(result);
         });
