@@ -4,18 +4,34 @@ I finished this project about the time that the 2017-2018 NCAA Men's Basketball 
 As a result of all that happened in the news, I decided to create an application that would scrape all the major news articles related to college basketball so that I (and other college basketball fans) could stay connected to the madness year round. More specifically, I used cheerio, MongoDB, Node.js, and various other technologies to scrape sports articles from http://www.espn.com/mens-college-basketball/, store them in a MongoDB database, and then add them to the application where fans can view them and leave comments.
 
 ## Table of contents
-  * [Live](#live)
-  * [About this project](#about-this-project)
-  * [Getting started](#getting-started)
-  * [Screenshots](#screenshots)
-  * [Technologies used to create app](#technologies-used)
-  	* [Backend technologies](#Backend)
+* [Live](#live)
+* [Screenshots](#screenshots)
+* [About this project](#about-this-project)
+* [Getting started](#getting-started)
+* [Technologies used to create app](#technologies-used)
+    * [Backend technologies](#Backend)
   	* [Frontend technologies](#Frontend)
-  * [Design improvements](#design-improvements)
-  * [Issues](#Issues)
+* [Design improvements](#design-improvements)
+* [Issues](#Issues)
 
 ## <a name="live"></a>Live
-Live: https://hoops-scraper.herokuapp.com/
+https://hoops-scraper.herokuapp.com/
+
+## <a name="screenshots"></a> Screenshots
+
+### Home page
+<img src="readme_images/home.png">
+<br>
+<br>
+<img src="readme_images/home2.png">
+
+### Saved articles page
+<img src="readme_images/saved_articles.png">
+<br>
+<br>
+<img src="readme_images/saved_articles2.png">
+
+### Leave a comment
 
 
 ## <a name="about-this-project"></a> About this project
@@ -25,6 +41,38 @@ Live: https://hoops-scraper.herokuapp.com/
 * [What is web scraping?](#about-web-scraping)
  
 ### <a name="how-app-works"></a> How the app works
+When you go to the home page of the app, you will see a list of scraped articles that come from the following site:
+http://www.espn.com/mens-college-basketball/. 
+
+<img src="readme_images/espn.png">
+
+Each scraped article you see on the home page is saved to the application database. If you want to check for new articles that haven't been scraped from the ESPN men's college basketball site yet, you can click <b>Scrape new articles</b> at the top of the home page.
+
+<img src="readme_images/scrape_new_articles.png">
+
+When you click <b>Scrape new articles</b>, the app first checks the database to see what article titles already exist, which ensures duplicate articles are not added to the database. Then, the app goes ahead and scrapes the site for new articles. If there are new article titles that are not stored in the database already, the app grabs the article information (headline, summary, photo, and link) and adds it to the database. 
+
+Because the app is basically performing three GET requests (one request to get all the articles before scraping, one request to scrape new articles, and a final request to get the updated list of scraped articles), this process might take a couple of seconds. If the app finds new articles, a dialog box will open that displays the number of new articles found. 
+
+<img src="readme_images/articles_found.png">
+
+If no new articles are found, the app will tell you that no new articles were found from the latest scrape.
+
+<img src="readme_images/no_articles>
+
+After you scrape any new articles, you can scroll through the home page to view all the articles. For each article, there are three options to choose from. You can continue reading, which takes you to the actual article on http://www.espn.com/mens-college-basketball/. 
+
+You can also save articles that you find interesting. When you save an article, it is added to the <b>Saved articles</b> page where you can post comments and start an anonymous discussion thread for that article.
+
+<img src="readme_images/save_article.png">
+<br>
+<br>
+<img src="readme_images/post_comment.png">
+<br>
+<br>
+<img src="readme_images/article_comments.png">
+
+From the Home page, you can also delete an article. Deleting an article deletes it from the application database, which means the article is removed from the site. However, the original article is still available to read from http://www.espn.com/mens-college-basketball/.
 
 ### <a name="how-the-app-is-built"></a> How the app is built
 
@@ -42,8 +90,10 @@ To set up this application locally on your computer, perform the following steps
   1. [Clone the repository](#clone-repository)
   2. [Install Node.js](#install-node)
   3. [Install the dependencies](#dependencies)
-  4. [Install Robo 3T](#install-robo)
-  5. [Start the server](#start-server)
+  4. [Start the daemon for MongoDB](#mongod)
+  5. [Start the MongoDB shell](#mongoshell)
+  6. [Install Robo 3T](#install-robo)
+  7. [Start the server](#start-server)
 
 ### <a name="clone-repository"></a> 1. Clone the repository
 The first step is to clone the project repository to a local directory on your computer. To clone the repository, run the following commands:
@@ -119,12 +169,25 @@ The first step is to clone the project repository to a local directory on your c
 
 <p>Version information for each of these packages is available in the <b>package.json</b> file in the project root directory.</p>
 
-### <a name="install-robo"></a> 4. Install Robo 3T
+### <a name="mongod"></a> 4. Start the daemon for MongoDB
+<p>Run the following command to start the daemon process for MongoDB, which handles data requests, manages data access, and performs background management operations.</p>
+<pre>
+    mongod
+</pre>
+<p><b>Note:</b> You want to keep mongod running in the background during development.</p>
+
+### <a name=mongoshell></a> 5. Start the MongoDB shell
+<p>In a separate terminal window, run the following comand to start up the MongoDB shell</p>
+<pre>
+mongo
+</pre>
+
+### <a name="install-robo"></a> 6. Install Robo 3T
 <p>If you don't already have Robo 3T installed on your computer, you can install the latest version here: https://robomongo.org/download</p>
-<p>For this project, Robo 3T is similar to MySQL Workbench (if you are used to working with MySQL databases). Robo 3T is a graphical user interface that is used to visually see the database and database collections (as opposed to using the command line interface for MongoDB).</p>
+<p>For this project, Robo 3T is similar to MySQL Workbench (if you are used to working with MySQL databases). Robo 3T is not required. But, similar to MySQL Workbench, it is a graphical user interface that is used to visually see the database and database collections (as opposed to using the command line interface for MongoDB).</p>
 
 
-### <a name="start-server">5. Start the server</a>
+### <a name="start-server">7. Start the server</a>
 <p>After performing all of the setup steps in the <b>Getting started</b> section, navigate to the project root directory (NewsScrape) and run the following command to start the server:</p>
 <pre>
 nodemon server.js
@@ -138,21 +201,6 @@ node server.js
 
 <p>To verify that the server has started and the application is working locally on your computer, open Chrome and go to <a href="http://localhost:3000">http://localhost:3000</a>.</p>
 
-## <a name="screenshots"></a> Screenshots
-
-### Home page
-<img src="readme_images/home.png">
-<br>
-<br>
-<img src="readme_images/home2.png">
-
-### Saved articles page
-<img src="readme_images/saved_articles.png">
-<br>
-<br>
-<img src="readme_images/saved_articles2.png">
-
-### Leave a comment
 
 ## <a name="technologies-used"></a> Technologies used to build app
 * [Backend technolgies](#Backend)
