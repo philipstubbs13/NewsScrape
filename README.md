@@ -1,11 +1,12 @@
 # BasketballScraper
+I finished this project about the time that the 2017-2018 NCAA Men's Basketball season came to end. Looking back at this season, a lot did happen that year. I would have to say that 2017-2018 was one of the more crazy, exciting, and interesting seasons that I can remember. I mean who can forget when Alabama nearly came back from an 11-point deficit with just over 10 minutes left while playing only three players against #14 Minnesota.
+
+As a result of all that happened in the news, I decided to create an application that would scrape all the major news articles related to college basketball so that I (and other college basketball fans) could stay connected to the madness year round. More specifically, I used cheerio, MongoDB, Node.js, and various other technologies to scrape sports articles from http://www.espn.com/mens-college-basketball/, store them in a MongoDB database, and then add them to the application where fans can view them and leave comments.
 
 ## Table of contents
   * [Live](#live)
-  * [Demo](#demo)
   * [About this project](#about-this-project)
   * [Getting started](#getting-started)
-  * [Structure of the project](#project-structure)
   * [Screenshots](#screenshots)
   * [Technologies used to create app](#technologies-used)
   	* [Backend technologies](#Backend)
@@ -108,12 +109,12 @@ The first step is to clone the project repository to a local directory on your c
 	<li><b>express</b> -  a Node.js web application framework (https://www.npmjs.com/package/express).</li>
 	<li><b>body-parser</b> - used to parse incoming request bodies in a middleware. (https://www.npmjs.com/package/body-parser)</li>
 	<li><b>cheerio</b> - a web scraping tool used to grab information from another site.</li>
-    <li><b>axios</b></li>
-    <li><b>mongojs</b></li>
-    <li><b>mongoose</b></li>
-    <li><b>morgan</b></li>
+    <li><b>axios</b> - a promise based HTTP client for the browser and node.js (https://www.npmjs.com/package/axios)</li>
+    <li><b>mongojs</b> - (https://www.npmjs.com/package/mongojs)</li>
+    <li><b>mongoose</b> - (https://www.npmjs.com/package/mongoose)</li>
+    <li><b>morgan</b> - (https://www.npmjs.com/package/morgan)</li>
     <li><b>express-handlebars</b> - allows you to use handlebars to create templates to build the HTML.</li>(https://www.npmjs.com/package/express-handlebars)</li>
-    <li><b>request</b></li>
+    <li><b>request</b> - (https://www.npmjs.com/package/request)</li>
 </ul>
 
 <p>Version information for each of these packages is available in the <b>package.json</b> file in the project root directory.</p>
