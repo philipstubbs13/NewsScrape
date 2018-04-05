@@ -68,6 +68,20 @@ module.exports = function(app) {
             }
         });
     });
+
+    //Delete a note
+    app.delete("/notes/:id", function(req, res) {
+        // Remember: when searching by an id, the id needs to be passed in
+        db.Note.deleteOne({ _id: req.params.id },
+            function(err, data) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                res.json(data);
+                }
+        });
+    });
 }
     
 

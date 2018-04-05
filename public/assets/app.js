@@ -186,7 +186,7 @@ $(window).load(function() {
                         $("#user-comments").append(userNoteDiv);
                         //Create delete comment button for each comment.
                         var removeComment = $("<button>");
-                        removeComment.text("Delete comment").attr("id", data._id).addClass("btn btn-primary mb-4");
+                        removeComment.text("Delete comment").attr("id", data[i]._id).addClass("btn btn-primary mb-4 delete-comment-btn");
                         userNoteDiv.append(removeComment);
                     }
                 }
@@ -233,6 +233,25 @@ $(window).load(function() {
                 window.location = "/saved"
             });
         }
+    });
+
+    //Click event to delete a comment.
+    $(document).on("click", ".delete-comment-btn", function(event){
+        event.preventDefault();
+        console.log("delete button clicked");
+        var id = $(this).attr("id");
+        console.log(id);
+
+            // Send the DELETE request using ajax.
+            $.ajax("/notes/" + id, {
+                type: "DELETE",
+            }).then(
+                function() {
+                console.log("deleted comment", id);
+                // Reload the page to get the updated list of saved comments.
+                location.reload();
+                }
+            );
     });
 });
 

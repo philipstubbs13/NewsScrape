@@ -35,5 +35,6 @@
 }
 
 .user-note-div {
-    border-bottom: 3px solid white; margin-top:20px;}
+    border-bottom: 3px solid white; margin-top:20px;
+    border-top: 3px solid white; 
 }
