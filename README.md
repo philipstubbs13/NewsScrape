@@ -103,6 +103,7 @@ To set up this application locally on your computer, perform the following steps
   1. [Clone the repository](#clone-repository)
   2. [Install Node.js](#install-node)
   3. [Install the dependencies](#dependencies)
+  4. [Install MongoDB](#install-mongo)
   4. [Start the daemon for MongoDB](#mongod)
   5. [Start the MongoDB shell](#mongoshell)
   6. [Install Robo 3T](#install-robo)
@@ -174,33 +175,36 @@ The first step is to clone the project repository to a local directory on your c
 	<li><b>cheerio</b> - a web scraping tool used to grab information from another site.</li>
     <li><b>axios</b> - a promise based HTTP client for the browser and node.js (https://www.npmjs.com/package/axios)</li>
     <li><b>mongojs</b> - a package that lets you access MongoDB using an API similar to the MongoDB shell.(https://www.npmjs.com/package/mongojs)</li>
-    <li><b>mongoose</b> - an ORM that allows you to connect to your MongoDB database and allows you to have access to the MongoDB commands to create, read, and update, and delete (https://www.npmjs.com/package/mongoose).</li>
+    <li><b>mongoose</b> - an ORM that allows you to connect to your MongoDB database and allows you to have access to the MongoDB commands to perform create, read, update, and delete operations on the database(https://www.npmjs.com/package/mongoose).</li>
     <li><b>morgan</b> - an HTML request logger middleware for Node.js that is used to log requests to your application (https://www.npmjs.com/package/morgan).</li>
     <li><b>express-handlebars</b> - allows you to use handlebars to create templates to build the HTML.</li>(https://www.npmjs.com/package/express-handlebars)</li>
-    <li><b>request</b> - Allows you to make HTTP requests using Node.js to fetch/scrape data from an external site(https://www.npmjs.com/package/request).</li>
+    <li><b>request</b> - Allows you to make HTTP requests using Node.js to fetch/scrape data from an external site (https://www.npmjs.com/package/request).</li>
 </ul>
 
 <p>Version information for each of these packages is available in the <b>package.json</b> file in the project root directory.</p>
 
-### <a name="mongod"></a> 4. Start the daemon for MongoDB
+### <a name="install-mongo"> 4. Install MongoDB
+For installation instructions, see <a href="https://github.com/philipstubbs13/coding-tips-tricks-resources/blob/master/MongoDB/Installing-MongoDB.md">Installing MongoDB</a>.
+
+### <a name="mongod"></a> 5. Start the daemon for MongoDB
 <p>Run the following command to start the daemon process for MongoDB, which handles data requests, manages data access, and performs background management operations.</p>
 <pre>
     mongod
 </pre>
 <p><b>Note:</b> You want to keep the mongod process running in the background during development.</p>
 
-### <a name=mongoshell></a> 5. Start the MongoDB shell
+### <a name=mongoshell></a> 6. Start the MongoDB shell
 <p>In a separate terminal window, run the following command to start up the MongoDB shell</p>
 <pre>
 mongo
 </pre>
 
-### <a name="install-robo"></a> 6. Install Robo 3T
+### <a name="install-robo"></a> 7. Install Robo 3T
 <p>If you don't already have Robo 3T installed on your computer, you can install the latest version here: https://robomongo.org/download</p>
 <p>For this project, Robo 3T is similar to MySQL Workbench (if you are used to working with MySQL databases). Robo 3T is not required. But, similar to MySQL Workbench, it is a graphical user interface that is used to visually see the database and database collections (as opposed to using the command line interface for MongoDB).</p>
 
 
-### <a name="start-server">7. Start the server</a>
+### <a name="start-server">8. Start the server</a>
 <p>After performing all of the setup steps in the <b>Getting started</b> section, navigate to the project root directory (NewsScrape) and run the following command to start the server:</p>
 <pre>
 nodemon server.js
