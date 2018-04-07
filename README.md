@@ -11,7 +11,6 @@ As a result of all that happened in the news, I decided to create an application
 * [Technologies used to create app](#technologies-used)
     * [Backend technologies](#Backend)
   	* [Frontend technologies](#Frontend)
-* [Design improvements](#design-improvements)
 * [Issues](#Issues)
 
 ## <a name="live"></a>Live
@@ -73,10 +72,12 @@ You can also save articles that you find interesting. When you save an article, 
 
 From the Home page, you can also delete an article. Deleting an article deletes it from the application database, which means the article is removed from the site. However, the original article is still available to read from http://www.espn.com/mens-college-basketball/.
 
-<img src"readme_images/delete_article.png">
+<img src="readme_images/delete_article.png">
 
 ### <a name="how-the-app-is-built"></a> How the app is built
 This project uses MongoDB, Node, Express, Handlebars, Mongoose ORM (Object Relational Mapper), and various npm packages such as cheerio. Node and MongoDB are used to query and route data in the application. Express is the backend web framework used for this application, and Handlebars is a templating language that is used to generate the HTML.
+
+For a complete list of technologies used to build this app, go to [Technologies used to create app](#technologies-used).
 
 As you can see, this application was built using many technologies. There are three main technologies in particular that are important in understanding how this app works: cheerio, mongoDB, and Mongoose.
 
@@ -134,23 +135,23 @@ The first step is to clone the project repository to a local directory on your c
     <ul>
       <li><b>assets/css/style.css</b>: External CSS stylesheet.</li>
       <li><b>assets/images</b>: Contains the background image used for this application.</li>
-      <li><b>assets/app.js</b>: Contains the jQuery ajax POST, GET, PUT, and DELETE requests for adding comments to articles, getting the articles from the database, updating an article when a user saves one, and deleting articles/comments respectively. </li>
+      <li><b>assets/app.js</b>: Contains the front end jQuery ajax POST, GET, PUT, and DELETE requests for adding comments to articles, getting the articles from the database, updating an article when a user saves one, and deleting articles/comments, respectively. </li>
     </ul>
   </li>
   <li>
-    <p><b>models</b>: Contains 3 files, which define the database schema or structure for this application.</p>
+    <p><b>models</b>: Contains 3 files, which define the database schema/structure for this application.</p>
         <ul>
-            <li><b>Headline.js</b></li>
-            <li><b>index.js</b></li>
-            <li><b>Note.js</b></li>
+            <li><b>Headline.js</b>: Defines the model for saving articles to the database.</li>
+            <li><b>index.js</b>: This file is exporting the models so that the app can use them.</li>
+            <li><b>Note.js</b>: Defines the model for saving article comments to the database.</li>
         </ul>
   </li>
   <li>
     <p><b>controllers</b>: Contains 3 files, which contain different routes (GET, POST, PUT, and DELETE). These routes are used to pass information to and from the view and model objects.</p>
         <ul>
-            <li><b>fetch.js</b></li>
-            <li><b>note.js</b></li>
-            <li><b>headline.js</b></li>
+            <li><b>fetch.js</b>: This file contains the route used to scrape data and save it to the database.</li>
+            <li><b>note.js</b>: This file contains routes used for grabbing a specific article and populating it with a comment, finding all the comments associated with an article, posting a comment, and deleting a comment.</li>
+            <li><b>headline.js</b>: This file contains routes used to find articles in the database, find saved articles, mark an article as saved, mark an article as unsaved, and delete an article. </li>
         </ul>
   <li>
     <p><b>views</b>: Contains the Handlebars files, which are templates used to generate the html files.</p> 
@@ -169,14 +170,14 @@ The first step is to clone the project repository to a local directory on your c
 <pre>npm install</pre>
 <ul>
 	<li><b>express</b> -  a Node.js web application framework (https://www.npmjs.com/package/express).</li>
-	<li><b>body-parser</b> - used to parse incoming request bodies in a middleware. (https://www.npmjs.com/package/body-parser)</li>
+	<li><b>body-parser</b> - a package used to parse incoming request bodies in a middleware. (https://www.npmjs.com/package/body-parser)</li>
 	<li><b>cheerio</b> - a web scraping tool used to grab information from another site.</li>
     <li><b>axios</b> - a promise based HTTP client for the browser and node.js (https://www.npmjs.com/package/axios)</li>
-    <li><b>mongojs</b> - (https://www.npmjs.com/package/mongojs)</li>
-    <li><b>mongoose</b> - (https://www.npmjs.com/package/mongoose)</li>
-    <li><b>morgan</b> - (https://www.npmjs.com/package/morgan)</li>
+    <li><b>mongojs</b> - a package that lets you access MongoDB using an API similar to the MongoDB shell.(https://www.npmjs.com/package/mongojs)</li>
+    <li><b>mongoose</b> - an ORM that allows you to connect to your MongoDB database and allows you to have access to the MongoDB commands to create, read, and update, and delete (https://www.npmjs.com/package/mongoose).</li>
+    <li><b>morgan</b> - an HTML request logger middleware for Node.js that is used to log requests to your application (https://www.npmjs.com/package/morgan).</li>
     <li><b>express-handlebars</b> - allows you to use handlebars to create templates to build the HTML.</li>(https://www.npmjs.com/package/express-handlebars)</li>
-    <li><b>request</b> - (https://www.npmjs.com/package/request)</li>
+    <li><b>request</b> - Allows you to make HTTP requests using Node.js to fetch/scrape data from an external site(https://www.npmjs.com/package/request).</li>
 </ul>
 
 <p>Version information for each of these packages is available in the <b>package.json</b> file in the project root directory.</p>
@@ -226,6 +227,7 @@ node server.js
 * Javascript
 
 
+
 ### <a name="Frontend"></a> Frontend technolgoies
 * HTML
 * CSS
@@ -233,9 +235,6 @@ node server.js
 * Javascript
 * jQuery (https://jquery.com/)
 * Handlebars (http://handlebarsjs.com/)
-
-## <a name="design-improvements"></a> Design improvements
-
 
 ## <a name ="Issues"></a> Issues
 <p>If you find an issue while using the app or have a request, <a href="https://github.com/philipstubbs13/NewsScrape/issues/" target="_blank">log the issue or request here</a>. These issues will be addressed in a future code update.</p>
