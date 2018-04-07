@@ -1,40 +1,47 @@
+/* Color of article summary*/
 .card-text {
     color: black !important;
 }
 
+/* Color of article title*/
 .card-title {
     color: white !important;
 }
 
+/*Width of each article image*/
 .article-img{
     max-width: 320px;
 }
 
+/* font size of article summaries*/
 .article-summary {
     font-size: 18px;
 }
 
+/*Jumbotron background image*/
 .jumbotron {
     background-image: url("/assets/images/background.jpg");
     background-repeat: no repeat;
     background-size: cover;
 }
 
-/* body { */
-    /* background-image: url("https://www.freepik.com/free-photos-vectors/background");
-    <a href="https://www.freepik.com/free-photos-vectors/background">Background vector created by Freepik</a>
-    background-repeat: no repeat; */
-/* } */
-
+/* Modal text size*/
 #number-articles-found, .comment-section-text {
     font-size: 18px;
 }
 
-.card, .social-btn {
+/*Color of article cards that are not "saved articles"*/
+.article-card, .social-btn {
     background-color: #00bade;
 }
 
+/*Add a top and bottom border around each user comment*/
 .user-note-div {
     border-bottom: 3px solid white; margin-top:20px;
     border-top: 3px solid white; 
+}
+
+/*title in Jumbotron*/
+#app-title {
+    font-size: 75px;
 }
