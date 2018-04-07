@@ -1,5 +1,5 @@
 # BasketballScraper
-I finished this project about the time that the 2017-2018 NCAA Men's Basketball season came to end. Looking back at this season, a lot did happen that year. I would have to say that 2017-2018 was one of the more crazy, exciting, and interesting seasons that I can remember. I mean who can forget when Alabama nearly came back from an 11-point deficit with just over 10 minutes left while playing only three players against #14 Minnesota.
+I finished this project about the same time that the 2017-2018 NCAA Men's Basketball season came to end. Looking back at that season in particular, a lot did happen that year. I would have to say that 2017-2018 was one of the more crazy, exciting, and interesting seasons that I can remember. I mean who can forget when Alabama nearly came back from an 11-point deficit with just over 10 minutes left while playing only three players against #14 Minnesota. Don't believe me? Check out the video here: https://www.youtube.com/watch?v=W5gz3vIIhkw.
 
 As a result of all that happened in the news, I decided to create an application that would scrape all the major news articles related to college basketball so that I (and other college basketball fans) could stay connected to the madness year round. More specifically, I used cheerio, MongoDB, Node.js, and various other technologies to scrape sports articles from http://www.espn.com/mens-college-basketball/, store them in a MongoDB database, and then add them to the application where fans can view them and leave comments.
 
@@ -30,8 +30,6 @@ https://hoops-scraper.herokuapp.com/
 <br>
 <br>
 <img src="readme_images/saved_articles2.png">
-
-### Leave a comment
 
 
 ## <a name="about-this-project"></a> About this project
@@ -75,11 +73,24 @@ You can also save articles that you find interesting. When you save an article, 
 
 From the Home page, you can also delete an article. Deleting an article deletes it from the application database, which means the article is removed from the site. However, the original article is still available to read from http://www.espn.com/mens-college-basketball/.
 
-### <a name="how-the-app-is-built"></a> How the app is built
+<img src"readme_images/delete_article.png">
 
+### <a name="how-the-app-is-built"></a> How the app is built
+This project uses MongoDB, Node, Express, Handlebars, Mongoose ORM (Object Relational Mapper), and various npm packages such as cheerio. Node and MongoDB are used to query and route data in the application. Express is the backend web framework used for this application, and Handlebars is a templating language that is used to generate the HTML.
+
+As you can see, this application was built using many technologies. There are three main technologies in particular that are important in understanding how this app works: cheerio, mongoDB, and Mongoose.
+
+### Cheerio
+Cheerio is an npm package that uses the syntax of jQuery so that the app can grab article information from the site we are trying to scrape and load that information into the MongoDB database and the app. For more information, see https://www.npmjs.com/package/cheerio.
+
+### MongoDB
+MongoDB is a document-oriented, NoSQL database that stores data in JSON-like (technically, BSON) format. The application uses MongoDB to store the articles that are scraped so that users can view them later and save comments. For more information, see https://docs.mongodb.com/.
+
+### Mongoose
+Mongoose is a MongoDB object modeling tool. The best thing about Mongoose is that you can have built-in automatic validation of the data being inserted or updated. For example, in this app, Mongoose validation is used to ensure that there are no duplicate article titles in the database. For more information about the power of Mongoose, see http://mongoosejs.com/.
 
 ### <a name="about-web-scraping"></a> What is web scraping?
-
+Web scraping is the process of grabbing information from another site using a web scraping tool (for example, cheerio), saving that information somewhere (such as a database), and copying the information over to your site. For more information, see https://en.wikipedia.org/wiki/Web_scraping.
 
 
 ## <a name="getting-started"></a> Getting started
