@@ -56,19 +56,6 @@ module.exports = function(app) {
     }
     });
 
-    //find and update the note
-    app.get("/notepopulate", function (req, res) {
-        Note.find({
-            "_id": req.params.id
-        }, function (error, doc) {
-            if (error) {
-                console.log(error);
-            } else {
-                res.send(doc);
-            }
-        });
-    });
-
     //Delete a note
     app.delete("/notes/:id", function(req, res) {
         // Remember: when searching by an id, the id needs to be passed in
